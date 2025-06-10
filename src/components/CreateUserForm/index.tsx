@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { createUser } from "@/services/user/createUser";
 
 const schemaFormCreateUser = z.object({
     email: z.string().email({
@@ -24,8 +25,15 @@ const CreateUserForm = () => {
         password: ""
     }
   });
-  const submit = (data: FormCreateUser) => {
-    console.log(data);
+  const submit = async (data: FormCreateUser) => {
+    const { email, username, password } = data;
+    try {
+        const response = await createUser(email, username, password);
+        console.log(response);
+    }
+    catch (error) {
+        console.log(error);
+    }
   }
 
   return (
@@ -90,7 +98,7 @@ const CreateUserForm = () => {
                 </FormItem>
               )} 
             />
-            <Button type="submit">
+            <Button className="cursor-pointer" type="submit">
                 Criar conta
             </Button>
         </form>
