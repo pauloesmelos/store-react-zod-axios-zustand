@@ -1,3 +1,4 @@
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Layout from "@/layout";
 import Auth from "@/pages/auth";
 import CreateUser from "@/pages/createUser";
@@ -14,8 +15,13 @@ export const router = createBrowserRouter([
                 path: "/"
             },
             {
-                element: <Home />,
-                path: "/home"
+                element: <ProtectedRoute />,
+                children: [
+                    {
+                        element: <Home />,
+                        path: "/home"
+                    }
+                ]
             },
             {
                 element: <Auth />,
