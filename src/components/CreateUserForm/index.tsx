@@ -1,10 +1,12 @@
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { createUser } from "@/services/user/createUser";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
 
 const schemaFormCreateUser = z.object({
     email: z.string().email({
@@ -17,6 +19,7 @@ const schemaFormCreateUser = z.object({
 type FormCreateUser = z.infer<typeof schemaFormCreateUser>
 
 const CreateUserForm = () => {
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(schemaFormCreateUser),
     defaultValues: {
@@ -25,6 +28,7 @@ const CreateUserForm = () => {
         password: ""
     }
   });
+
   const submit = async (data: FormCreateUser) => {
     const { email, username, password } = data;
     try {
@@ -38,6 +42,9 @@ const CreateUserForm = () => {
 
   return (
     <Form {...form}>
+        <FormDescription className="mb-6">
+          Crie sua conta
+        </FormDescription>
         <form 
           onSubmit={form.handleSubmit(submit)} 
           className="flex flex-col gap-6"
@@ -102,6 +109,16 @@ const CreateUserForm = () => {
                 Criar conta
             </Button>
         </form>
+        <div className="w-full mt-5">
+          <div className="w-full text-center flex flex-col gap-4">
+            <Separator />
+            <span className="w-full">Ou</span>
+            <Separator />
+          </div>
+          <Button onClick={() => navigate("/login")} className="mt-5 w-full bg-blue-500 hover:bg-blue-700 cursor-pointer">
+            Fazer Login
+          </Button>
+        </div>
     </Form>
   )
 }
